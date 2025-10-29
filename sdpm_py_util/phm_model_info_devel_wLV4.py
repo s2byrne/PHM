@@ -50,12 +50,12 @@ def create_model_info_dict():
 
     #run_type = 'forecast' # this is the switch to go from forecasting to hindcasting...
 
-    pfm_dir = '/scratch/PFM_Simulations/' # this stays fixed for Grids and executables
+    pfm_dir = '/glade/work/sbyrne/PFM_Simulations/' # this stays fixed for Grids and executables
                                          # both forecasting and hindcasting use the same ones.
     if run_type == 'forecast':
-       pfm_root_dir = '/scratch/PFM_Simulations/'       
+       pfm_root_dir = '/glade/work/sbyrne/PFM_Simulations/'       
     else:
-       pfm_root_dir = '/scratch/PHM_Simulations/'       
+       pfm_root_dir = '/glade/work/sbyrne/PHM_Simulations/'       
    
     PFM = dict()
     if run_type == 'hindcast': # note hycom with tides starts on 2024-10-10 1200...
@@ -76,13 +76,13 @@ def create_model_info_dict():
         # we loop through levels_to_run
         PFM['levels_to_run'] = ['LV1','LV2','LV3','LV4']
         ocn_model = 'hycom_hind_wtide' # _wtide indicates using the new (>20241010) hycom
-        PFM['atm_hind_dir'] = '/dataSIO/PHM_Simulations/raw_download/nam_grb2'
+        PFM['atm_hind_dir'] = '/glade/work/sbyrne/forcings/raw_download/nam_grb2'
         atm_model = 'nam_analysis'
         PFM['atm_dt_hr'] = 3
-        PFM['server'] = 'swell'
-        PFM['qtj_obs_fname_full'] = '/dataSIO/PHM_Simulations/raw_download/qtj_obs_data/qtj_raw_20200101_20250901.csv'
+        PFM['server'] = 'derecho'
+        PFM['qtj_obs_fname_full'] = '/glade/work/sbyrne/forcings/raw_download/q_obs_data/qtj_raw_20200101_20250901.csv'
         PFM['pb_time_switch'] = datetime(2025,4,1)
-        PFM['nwm_dir'] = '/dataSIO/PHM_Simulations/raw_download/nwm_files/'
+        PFM['nwm_dir'] = '/glade/work/sbyrne/forcings/raw_download/nwm_files/'
     else:
         # hycom_new is the only forecast option
         ocn_model = 'hycom_new' # worked with 'hycom' but that is now (9/13/24) depricated      
@@ -182,7 +182,7 @@ def create_model_info_dict():
             PFM['forecast_days'] = 5.0 #is the target 
             PFM['atm_dt_hr'] = 1
     
-    PFM['ecmwf_dir'] = '/scratch/PFM_Simulations/ecmwf_data/'
+    PFM['ecmwf_dir'] = '/glade/work/sbyrne/PHM_Simulations/ecmwf_data/'
     PFM['ecmwf_all_pkl_name'] = 'ecmwf_all.pkl'
     PFM['ecmwf_pkl_roms_vars'] = 'ecmwf_roms_vars.pkl'
     PFM['ecmwf_pkl_on_roms_grid'] = 'ecmwf_on_romsgrid.pkl'
@@ -356,8 +356,8 @@ def create_model_info_dict():
         PFM['hycom_data_dir'] = pfm_root_dir + 'hycom_data/'
         PFM['cdip_data_dir'] = pfm_root_dir + 'cdip_data'
     else:
-        PFM['hycom_data_dir'] = '/dataSIO/PHM_Simulations/raw_download/hycom_nc/'
-        PFM['cdip_data_dir'] =  '/dataSIO/PHM_Simulations/raw_download/cdip_data'
+        PFM['hycom_data_dir'] = pfm_root_dir + 'hycom_data/'
+        PFM['cdip_data_dir'] = pfm_root_dir + 'cdip_data'
 
 
     PFM['lv1_tides_file']          = 'ocean_tide.nc'
