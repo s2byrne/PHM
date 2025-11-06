@@ -240,24 +240,24 @@ def create_model_info_dict():
     NN=dict() 
     NN['L1','Lm']  = 251     # Lm in input file
     NN['L1','Mm']  = 388     # Mm in input file
-    NN['L1','ntilei'] = 9    # 6 number of tiles in I-direction
-    NN['L1','ntilej'] = 24   # 18 number of tiles in J-direction
+    NN['L1','ntilei'] = 12    # 6 number of tiles in I-direction
+    NN['L1','ntilej'] = 32   # 18 number of tiles in J-direction
     NN['L1','np'] = NN['L1','ntilei'] * NN['L1','ntilej'] # total number of processors
-    NN['L1','nnodes'] =  int( NN['L1','np'] / 36 )  # 3 number of nodes to be used.  not for .in file but for slurm!
+    NN['L1','nnodes'] =  int( NN['L1','np'] / 64 )  # 6 number of nodes to be used.  not for .in file but for slurm!
 
     NN['L2','Lm']  = 264     # Lm in input file
     NN['L2','Mm']  = 396     # Mm in input file
-    NN['L2','ntilei'] = 9    # 6 number of tiles in I-direction
-    NN['L2','ntilej'] = 24   # 18 number of tiles in J-direction
+    NN['L2','ntilei'] = 12    # 6 number of tiles in I-direction
+    NN['L2','ntilej'] = 32   # 18 number of tiles in J-direction
     NN['L2','np'] = NN['L2','ntilei'] * NN['L2','ntilej'] # total number of processors
-    NN['L2','nnodes'] = int( NN['L2','np'] / 36 )  # 3 number of nodes to be used.  not for .in file but for slurm!
+    NN['L2','nnodes'] = int( NN['L2','np'] / 64 )  # 6 number of nodes to be used.  not for .in file but for slurm!
 
     NN['L3','Lm']  = 249     # Lm in input file
     NN['L3','Mm']  = 411     # Mm in input file
     NN['L3','ntilei'] = 12    # 6 number of tiles in I-direction
-    NN['L3','ntilej'] = 30    # 18 number of tiles in J-direction
+    NN['L3','ntilej'] = 32    # 18 number of tiles in J-direction
     NN['L3','np'] = NN['L3','ntilei'] * NN['L3','ntilej'] # total number of processors
-    NN['L3','nnodes'] = int( NN['L3','np'] / 36  )  # 3 number of nodes to be used.  not for .infile but for slurm!
+    NN['L3','nnodes'] = int( NN['L3','np'] / 64  )  # 6 number of nodes to be used.  not for .infile but for slurm!
 
     NN['L4','Lm']  = 484     # Lm in input file
     NN['L4','Mm']  = 1139     # Mm in input file
@@ -442,7 +442,7 @@ def create_model_info_dict():
     PFM['restart_files_dir'] =  pfm_root_dir + 'restart_data' 
 
     # right now there are restarts from 2024-10-12 to 2024-10-19
-    PFM['lv1_use_restart']         = 0 # use_restart
+    PFM['lv1_use_restart']         = 0 #  0 means use_restart
     PFM['lv2_use_restart']         = 0
     PFM['lv3_use_restart']         = 0
     PFM['lv4_use_restart']         = 0

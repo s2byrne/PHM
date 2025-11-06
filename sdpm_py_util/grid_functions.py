@@ -1,8 +1,9 @@
 # grid functions
-import netCDF4 as nc
-
+import sys 
+import netCDF4
 def roms_grid_to_dict(fng):
-    gr = nc.Dataset(fng)    
+    fng = '/glade/u/home/sbyrne/ROMS_all/runs/grid/GRID_SDTJRE_LV1_rx020_hmask.nc'
+    gr = netCDF4.Dataset(fng)   
     # get roms grid variables
     RM=dict()
     RM['lon_rho']=gr.variables['lon_rho'][:,:]

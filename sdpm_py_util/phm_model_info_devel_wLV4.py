@@ -20,7 +20,6 @@ def slurm_format_minutes(mins):
 
 
 def get_llbox(fname):
-    
    RMG = grdfuns.roms_grid_to_dict(fname)
    lt_mx = np.max(RMG['lat_rho'])
    lt_mn = np.min(RMG['lat_rho'])
@@ -50,7 +49,7 @@ def create_model_info_dict():
 
     #run_type = 'forecast' # this is the switch to go from forecasting to hindcasting...
 
-    pfm_dir = '/glade/work/sbyrne/PFM_Simulations/' # this stays fixed for Grids and executables
+    pfm_dir = '/glade/work/sbyrne/PHM_Simulations/' # this stays fixed for Grids and executables
                                          # both forecasting and hindcasting use the same ones.
     if run_type == 'forecast':
        pfm_root_dir = '/glade/work/sbyrne/PFM_Simulations/'       
@@ -59,9 +58,9 @@ def create_model_info_dict():
    
     PFM = dict()
     if run_type == 'hindcast': # note hycom with tides starts on 2024-10-10 1200...
-        sim_start_time = '2024101900' # the simulation start time is in yyyymmddhh format
+        sim_start_time = '2024101400' # the simulation start time is in yyyymmddhh format
         # 2024101100 is the 1st day of hycom with tides hycom data.
-        sim_end_time   = '2024102100' # this is the very last time of the full simulation
+        sim_end_time   = '2024101600' # this is the very last time of the full simulation
         PFM['forecast_days'] = 1.0 # for now we do 1 day sub simulations
         # set the simulation end time. An integer number of days past the start time
         # We will loop over days until we get to this time.
@@ -229,35 +228,35 @@ def create_model_info_dict():
     SS['L4','TCLINE']      = 3.5                    # critical depth (m)
     SS['L4','hc']          = 3.5 
 
+    #print(lv1_grid_file)
     LLB = dict()
     LLB['L1'] = get_llbox(lv1_grid_file)
     LLB['L2'] = get_llbox(lv2_grid_file)
     LLB['L3'] = get_llbox(lv3_grid_file)
     LLB['L4'] = get_llbox(lv4_grid_file)
 
-
 # gridding info make sure ntilei * ntilej is a multiple of 36. that's how many cores per node on swell
     NN=dict() 
     NN['L1','Lm']  = 251     # Lm in input file
     NN['L1','Mm']  = 388     # Mm in input file
-    NN['L1','ntilei'] = 9    # 6 number of tiles in I-direction
-    NN['L1','ntilej'] = 24   # 18 number of tiles in J-direction
+    NN['L1','ntilei'] = 12    # 6 number of tiles in I-direction
+    NN['L1','ntilej'] = 32   # 18 number of tiles in J-direction
     NN['L1','np'] = NN['L1','ntilei'] * NN['L1','ntilej'] # total number of processors
-    NN['L1','nnodes'] =  int( NN['L1','np'] / 36 )  # 3 number of nodes to be used.  not for .in file but for slurm!
+    NN['L1','nnodes'] =  int( NN['L1','np'] / 64 )  # 6 number of nodes to be used.  not for .in file but for slurm!
 
     NN['L2','Lm']  = 264     # Lm in input file
     NN['L2','Mm']  = 396     # Mm in input file
-    NN['L2','ntilei'] = 9    # 6 number of tiles in I-direction
-    NN['L2','ntilej'] = 24   # 18 number of tiles in J-direction
+    NN['L2','ntilei'] = 12    # 6 number of tiles in I-direction
+    NN['L2','ntilej'] = 32   # 18 number of tiles in J-direction
     NN['L2','np'] = NN['L2','ntilei'] * NN['L2','ntilej'] # total number of processors
-    NN['L2','nnodes'] = int( NN['L2','np'] / 36 )  # 3 number of nodes to be used.  not for .in file but for slurm!
+    NN['L2','nnodes'] = int( NN['L2','np'] / 64 )  # 6 number of nodes to be used.  not for .in file but for slurm!
 
     NN['L3','Lm']  = 249     # Lm in input file
     NN['L3','Mm']  = 411     # Mm in input file
     NN['L3','ntilei'] = 12    # 6 number of tiles in I-direction
-    NN['L3','ntilej'] = 30    # 18 number of tiles in J-direction
+    NN['L3','ntilej'] = 32    # 18 number of tiles in J-direction
     NN['L3','np'] = NN['L3','ntilei'] * NN['L3','ntilej'] # total number of processors
-    NN['L3','nnodes'] = int( NN['L3','np'] / 36  )  # 3 number of nodes to be used.  not for .infile but for slurm!
+    NN['L3','nnodes'] = int( NN['L3','np'] / 64  )  # 6 number of nodes to be used.  not for .infile but for slurm!
 
     NN['L4','Lm']  = 484     # Lm in input file
     NN['L4','Mm']  = 1139     # Mm in input file
@@ -444,13 +443,17 @@ def create_model_info_dict():
     # right now there are restarts from 2024-10-12 to 2024-10-19
     # using restarts is now automatic based on assuming 20241011
     # is the very first hindcast day
-    if sim_start_time == '2024101100':
-        use_restart_files = 0
-    else:
-        use_restart_files = 1
+    # if sim_start_time == '2024101100': 
+    #     # this is very confusing but will be where we set a condition for whether to use a restart file or not
+    #     # our condition is going to be different than Matt's so for now I am making this always run a new simulation 
+    #     # 0 means run new sim, 1 means use restart
+    #     use_restart_files = 0
+    # else:
+    #     use_restart_files = 0
+    use_restart_files = 0
 
     if use_restart_files == 0:
-        PFM['lv1_use_restart']         = 0 # use_restart
+        PFM['lv1_use_restart']         = 0 # do NOT use_restart
         PFM['lv2_use_restart']         = 0
         PFM['lv3_use_restart']         = 0
         PFM['lv4_use_restart']         = 0
@@ -461,7 +464,6 @@ def create_model_info_dict():
         PFM['lv3_use_restart']         = 1
         PFM['lv4_use_restart']         = 1
         PFM['lv4_swan_use_rst']        = 1
-
 
     # now do the timing information
     start_time = datetime.now()
