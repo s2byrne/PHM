@@ -33,7 +33,6 @@ def evaluate_function_from_file(file_path, function_name, *args):
         
         # Get the function from the dictionary
         func = func_dict[function_name]
-        
         # Call the function with the provided arguments
         result = func(*args)
         return result
@@ -306,7 +305,7 @@ def initialize_simulation(pkl_fnm):
 
 def move_restart_ncs(pkl_fnm):
     PFM = get_model_info(pkl_fnm)
-    PFM['restart_file_dir'] = '/scratch/PFM_Simulations/restart_data'
+    #PFM['restart_file_dir'] = '/scratch/PFM_Simulations/restart_data'
     rst_dirs = [PFM['lv1_forc_dir'],PFM['lv2_forc_dir'],PFM['lv3_forc_dir'],PFM['lv4_forc_dir']]
     for pp in rst_dirs:
         ddd = pp + '/*rst*.nc'
@@ -316,7 +315,7 @@ def move_restart_ncs(pkl_fnm):
         else:
             for f in fall:
                 head, tail = os.path.split(f)
-                fnew = PFM['restart_file_dir'] + '/' + tail
+                fnew = PFM['restart_files_dir'] + '/' + tail
                 shutil.move(f,fnew)
 
 def remove_old_restart_ncs(pkl_fnm):
@@ -406,7 +405,9 @@ def get_restart_file_and_index(lvl,pkl_fnm):
 
     print('going to restart ' + lvl + ' from')
     print(t_fore)
+    print(PFM['restart_files_dir'])
     rst_files = glob.glob(PFM['restart_files_dir'] + '/' + lvl + '*.nc')
+    print(rst_files)
     dts = []
     for rf in rst_files:
         head, tail = os.path.split(rf)
@@ -419,7 +420,7 @@ def get_restart_file_and_index(lvl,pkl_fnm):
     found = 0
     while cnt < len(isort):
         fname = rst_files[isort[cnt]]
-        #print('looking in ' + fname + ' for the right restart time...')
+        print('looking in ' + fname + ' for the right restart time...')
         ds = netCDF4.Dataset(fname)
         t_var = ds['ocean_time']
         t_units = t_var.units
@@ -494,8 +495,8 @@ def set_up_for_autostart_hindcast( PFM ):
 
 def remove_old_swan_rst(pkl_fnm):
     PFM = get_model_info(pkl_fnm)
-    PFM['restart_file_dir'] = '/scratch/PFM_Simulations/restart_data'
-    rst_files = glob.glob(PFM['restart_file_dir'] + '/LV4*dat*')
+    #PFM['restart_file_dir'] = '/scratch/PFM_Simulations/restart_data'
+    rst_files = glob.glob(PFM['restart_files_dir'] + '/LV4*dat*')
     if len(rst_files)>0:
         for rf in rst_files:
             head, tail = os.path.split(rf)

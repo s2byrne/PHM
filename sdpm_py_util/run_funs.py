@@ -117,7 +117,7 @@ def  make_LV1_dotin_and_SLURM( pkl_fnm , mod_type ):
 
     lv1_infile_local  = 'LV1_forecast_run.in'
     lv1_logfile_local = 'LV1_forecast.log'
-    lv1_sbfile_local  = 'LV1_SLURM.sb'
+    lv1_sbfile_local  = 'LV1_derecho.sh'
     D['lv1_infile_local']  = lv1_infile_local
     D['lv1_logfile_local'] = lv1_logfile_local
     D['lv1_tides_file']    = PFM['lv1_tides_file']
@@ -130,9 +130,9 @@ def  make_LV1_dotin_and_SLURM( pkl_fnm , mod_type ):
     dot_in_dir   = '.'
     blank_infile = dot_in_dir +'/' +  'LV1_BLANK.in'
     if "INTEL" in D['lv1_executable']:
-        blank_sbfile = dot_in_dir +'/' +  'LV1_SLURM_intel_BLANK.sb'
+        blank_sbfile = dot_in_dir +'/' +  'LV1_derecho_BLANK.sh'
     else:        
-        blank_sbfile = dot_in_dir +'/' +  'LV1_SLURM_BLANK.sb'
+        blank_sbfile = dot_in_dir +'/' +  'LV1_derecho_BLANK.sh'
     
     print('for this LV1 simulation')
     print('the grid file used is:')
@@ -194,7 +194,7 @@ def run_slurm_LV1( pkl_fnm , mod_type):
     os.chdir(PFM['lv1_run_dir'])
     print('run_slurm_LV1: current directory is now: ', os.getcwd() )
     
-    cmd_list = ['sbatch', '--wait' ,'LV1_SLURM.sb']
+    cmd_list = ['qsub' ,'LV1_derecho.sh']
     proc = subprocess.run(cmd_list, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     print(proc)
     print('subprocess slurm ran correctly? ' + str(proc.returncode) + ' (0=yes)')
